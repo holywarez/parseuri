@@ -5,6 +5,17 @@
 // Upgraded by Anatoly Lapshin
 
 (function() {
+
+    Array.prototype.contains = function(obj) {
+        var i = this.length;
+        while (i--) {
+            if (this[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     var URI = window.URI = {};
 
     var extensionPack = {
@@ -17,31 +28,38 @@
             return !this.host;
         },
 
-        toString: function() {
+        toString: function(except) {
+            var except = except || [];
             var result = "";
+            var original = "";
             if (this.protocol) {
-                result += this.protocol + "://";
+                if (!except.contains('protocol')) result += this.protocol + "://";
+                original += this.protocol + "://";
                 if (this.userInfo) {
-                    result += this.userInfo + "@";
+                    if (!except.contains('userInfo')) result += this.userInfo + "@";
+                    original += this.userInfo + "@";
                 }
 
                 if (this.host) {
-                    result += this.host;
+                    if (!except.contains('host')) result += this.host;
+                    original += this.host;
                 }
 
                 if (this.port) {
-                    result += ":" + this.port;
+                    if (!except.contains('port'))  result += ":" + this.port;
+                    original += ":" + this.port;
                 }
             }
 
             if (this.path) {
-                result += this.path;
+                if (!except.contains('path')) result += this.path;
+                original += this.path;
             }
 
             if (this.queryKey) {
                 var queryString = "";
                 var first = true;
-                for (var key in this.queryKey) {
+                for (var key in this.qls ueryKey) {
                     if (!this.queryKey.hasOwnProperty(key)) continue;
 
                     if (!first) queryString += "&";
@@ -49,14 +67,16 @@
                     first = false;
                 }
 
-                result += "?" + queryString;
+                if (!except.contains('queryKey')) result += "?" + queryString;
+                original += "?" + queryString;
             }
 
             if (this.anchor) {
-                result += "#" + this.anchor;
+                if (!except.contains('anchor')) result += "#" + this.anchor;
+                original += "#" + this.anchor;
             }
 
-            jQuery.extend(this, URI.parse(result));
+            jQuery.extend(this, URI.parse(original));
 
             return result;
         }
