@@ -67,8 +67,10 @@
                     first = false;
                 }
 
-                if (!except.contains('queryKey')) result += "?" + queryString;
-                original += "?" + queryString;
+                if (queryString.length > 0) {
+                    if (!except.contains('queryKey')) result += "?" + queryString;
+                    original += "?" + queryString;
+                }
             }
 
             if (this.anchor) {
