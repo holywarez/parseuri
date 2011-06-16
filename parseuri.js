@@ -20,6 +20,17 @@
 
     var extensionPack = {
 
+        toAbsolute: function(pattern) {
+            if (pattern.isRelative()) return;
+
+            this.host = pattern.host;
+            this.port = pattern.port;
+            this.protocol = pattern.protocol;
+            this.user = pattern.user;
+            this.password = pattern.password;
+            return this.toString();
+        },
+
         isAbsolute: function() {
             return !this.isRelative();
         },
@@ -35,9 +46,16 @@
             if (this.protocol) {
                 if (!except.contains('protocol')) result += this.protocol + "://";
                 original += this.protocol + "://";
-                if (this.userInfo) {
-                    if (!except.contains('userInfo')) result += this.userInfo + "@";
-                    original += this.userInfo + "@";
+                if (this.user) {
+                    if (!except.contains('userInfo')) result += this.user;
+                    original += this.user;
+                    if (this.password) {
+                        if (!except.contains('userInfo')) result += ":" + this.password;
+                        original += ":" + this.password;
+                    }
+
+                    if (!except.contains('userInfo')) result += "@";
+                    original += "@";
                 }
 
                 if (this.host) {
