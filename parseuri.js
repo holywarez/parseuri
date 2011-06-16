@@ -59,7 +59,7 @@
             if (this.queryKey) {
                 var queryString = "";
                 var first = true;
-                for (var key in this.qls ueryKey) {
+                for (var key in this.queryKey) {
                     if (!this.queryKey.hasOwnProperty(key)) continue;
 
                     if (!first) queryString += "&";
